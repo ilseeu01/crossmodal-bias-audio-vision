@@ -1,0 +1,201 @@
+/* General Styles */
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.hero-body {
+  padding: 3rem 1.5rem;
+}
+
+.publication-title {
+  color: white;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+}
+
+.publication-title-en {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 400;
+  margin-top: 0.5rem;
+}
+
+.publication-authors {
+  color: rgba(255, 255, 255, 0.95);
+  margin-top: 1rem;
+}
+
+.publication-authors a {
+  color: white;
+}
+
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+
+.publication-venue {
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.publication-links {
+  margin-top: 1.5rem;
+}
+
+.publication-links .button {
+  margin: 0.25rem;
+}
+
+/* Section Styles */
+.section {
+  padding: 3rem 1.5rem;
+}
+
+.section h2.title {
+  margin-bottom: 1rem;
+}
+
+/* Card Styles */
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  background: #f8f9fa;
+}
+
+.card-header-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.card-image img {
+  object-fit: cover;
+}
+
+/* Comparison Section */
+.comparison-section {
+  margin-top: 2rem;
+}
+
+.comparison-row {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.comparison-row h4 {
+  margin-bottom: 1rem;
+  color: #363636;
+}
+
+/* Select Dropdown */
+.select select {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Audio Player */
+audio {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Analysis Section */
+#analysis-section .card-image img {
+  padding: 1rem;
+  background: white;
+}
+
+/* Box Styles */
+.box {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box h3 {
+  color: #363636;
+  margin-bottom: 1rem;
+}
+
+/* BibTeX Section */
+#bibtex pre {
+  background: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+#bibtex code {
+  font-size: 0.85rem;
+}
+
+/* Footer */
+.footer {
+  padding: 2rem 1.5rem;
+  background: #f8f9fa;
+}
+
+.footer p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.footer a {
+  color: #667eea;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .publication-title {
+    font-size: 1.5rem;
+  }
+
+  .publication-title-en {
+    font-size: 1rem;
+  }
+
+  .comparison-row {
+    padding: 1rem;
+  }
+}
+
+/* Image Loading Placeholder */
+.card-image {
+  background: #f0f0f0;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Model Selector Highlight */
+.select.is-medium select {
+  border: 2px solid #667eea;
+  font-weight: 500;
+}
+
+.select.is-medium select:focus {
+  border-color: #764ba2;
+  box-shadow: 0 0 0 0.125em rgba(102, 126, 234, 0.25);
+}

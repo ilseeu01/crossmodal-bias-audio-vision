@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Cultural Bias Analysis in Sound-Based Generation of Multimodal Generative AI">
+  <meta name="keywords" content="Multimodal AI, Cultural Bias, Sound-to-Image, Text-to-Sound">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cultural Bias in Sound-Based Multimodal Generation</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            멀티모달 생성형 인공지능에서<br>사운드 기반 생성의 문화적 편향 분석
+          </h1>
+          <h2 class="subtitle is-4 publication-title-en">
+            Cultural Bias Analysis in Sound-Based Generation of Multimodal Generative AI
+          </h2>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="#">이혜진</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="#">진솔</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="#">김형일</a><sup>2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>전남대학교 컴퓨터정보통신공학과</span>
+            <span class="author-block"><sup>2</sup>전남대학교 전자컴퓨터공학부</span>
+          </div>
+
+          <div class="is-size-6 publication-venue">
+            제38회 영상처리 및 이해에 관한 워크샵 (IPIU 2026)
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Abstract -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            본 연구는 멀티모달 생성형 인공지능에서 사운드 기반 생성에서 발생하는 문화적 편향을 분석한다.
+            특히 <strong>sound-to-image</strong> 및 <strong>text-to-sound</strong> 생성 태스크를 대상으로,
+            서양권 데이터로 학습된 모델이 비서구 문화적 맥락을 어떻게 반영하는지를 실험적으로 평가한다.
+            한국 문화 요소가 포함된 입력을 구성하고, 생성 결과를 품질과 의도 정합성 관점에서 분석한 결과,
+            모델이 문화적 특성을 충분히 반영하지 못하고 서구 중심적 표현으로 치환하는 경향을 확인하였다.
+            본 연구는 사운드가 포함된 멀티모달 생성 환경에서의 문화적 편향 문제를 정리하고,
+            향후 공정한 멀티모달 생성 모델 설계를 위한 기초 분석을 제공한다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sound-to-Image Results -->
+<section class="section" id="s2i-section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Sound-to-Image Generation</h2>
+    <p class="subtitle has-text-centered">소리 입력으로부터 이미지를 생성하는 모델들의 결과 비교</p>
+
+    <!-- Model Selector -->
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <div class="field">
+          <label class="label">Select Model</label>
+          <div class="control">
+            <div class="select is-fullwidth is-medium">
+              <select id="s2i-model-selector" onchange="updateS2IImages()">
+                <option value="sound2scene">Sound2Scene</option>
+                <option value="sound2vision">Sound2Vision</option>
+                <option value="sonicdiffusion" selected>SonicDiffusion</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contemporary vs Traditional Comparison -->
+    <div class="comparison-section">
+      <h3 class="title is-4 has-text-centered" style="margin-top: 2rem;">Contemporary vs Traditional</h3>
+
+      <!-- Piano vs Gayageum -->
+      <div class="comparison-row">
+        <h4 class="title is-5">악기 (Instruments)</h4>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">Piano (Contemporary)</p></div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img class="s2i-image" data-category="piano" src="./static/images/s2i/sonicdiffusion/piano.png" alt="Piano generated image">
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">가야금 Gayageum (Traditional)</p></div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img class="s2i-image" data-category="gayageum" src="./static/images/s2i/sonicdiffusion/gayageum.png" alt="Gayageum generated image">
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Washing Machine vs Wooden Beaters -->
+      <div class="comparison-row">
+        <h4 class="title is-5">가사 노동 (Household Work)</h4>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">Washing Machine (Contemporary)</p></div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img class="s2i-image" data-category="washing_machine" src="./static/images/s2i/sonicdiffusion/washing_machine.png" alt="Washing machine generated image">
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">다듬이질 Wooden Beaters (Traditional)</p></div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img class="s2i-image" data-category="wooden_beaters" src="./static/images/s2i/sonicdiffusion/wooden_beaters.png" alt="Wooden beaters generated image">
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Church vs Temple -->
+      <div class="comparison-row">
+        <h4 class="title is-5">종교 (Religion)</h4>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">Church Bell (Contemporary)</p></div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img class="s2i-image" data-category="church" src="./static/images/s2i/sonicdiffusion/church.png" alt="Church generated image">
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">사찰 종 Temple Bell (Traditional)</p></div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img class="s2i-image" data-category="temple" src="./static/images/s2i/sonicdiffusion/temple.png" alt="Temple generated image">
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typewriter vs Inkstone -->
+      <div class="comparison-row">
+        <h4 class="title is-5">쓰기 도구 (Writing Tools)</h4>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">Typewriter (Contemporary)</p></div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img class="s2i-image" data-category="typewriter" src="./static/images/s2i/sonicdiffusion/typewriter.png" alt="Typewriter generated image">
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">먹 갈기 Inkstone (Traditional)</p></div>
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img class="s2i-image" data-category="inkstone" src="./static/images/s2i/sonicdiffusion/inkstone.png" alt="Inkstone generated image">
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Text-to-Sound Results -->
+<section class="section has-background-light" id="t2s-section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Text-to-Sound Generation</h2>
+    <p class="subtitle has-text-centered">텍스트 프롬프트로부터 소리를 생성하는 모델들의 결과 비교</p>
+
+    <!-- Model Selector -->
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <div class="field">
+          <label class="label">Select Model</label>
+          <div class="control">
+            <div class="select is-fullwidth is-medium">
+              <select id="t2s-model-selector" onchange="updateT2SAudios()">
+                <option value="audioldm" selected>AudioLDM</option>
+                <option value="make-an-audio">Make-An-Audio</option>
+                <option value="audiocraft">AudioCraft</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audio Samples -->
+    <div class="comparison-section">
+      <h3 class="title is-4 has-text-centered" style="margin-top: 2rem;">Contemporary vs Traditional</h3>
+
+      <!-- Piano vs Gayageum -->
+      <div class="comparison-row">
+        <h4 class="title is-5">악기 (Instruments)</h4>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">"the sound of a piano"</p></div>
+              <div class="card-content">
+                <audio class="t2s-audio" data-category="piano" controls style="width: 100%;">
+                  <source src="./static/audio/t2s/audioldm/piano.wav" type="audio/wav">
+                </audio>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">"the sound of a gayageum"</p></div>
+              <div class="card-content">
+                <audio class="t2s-audio" data-category="gayageum" controls style="width: 100%;">
+                  <source src="./static/audio/t2s/audioldm/gayageum.wav" type="audio/wav">
+                </audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Washing Machine vs Wooden Beaters -->
+      <div class="comparison-row">
+        <h4 class="title is-5">가사 노동 (Household Work)</h4>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">"the sound of a washing machine"</p></div>
+              <div class="card-content">
+                <audio class="t2s-audio" data-category="washing_machine" controls style="width: 100%;">
+                  <source src="./static/audio/t2s/audioldm/washing_machine.wav" type="audio/wav">
+                </audio>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">"the sound of pounding laundry with wooden beaters"</p></div>
+              <div class="card-content">
+                <audio class="t2s-audio" data-category="wooden_beaters" controls style="width: 100%;">
+                  <source src="./static/audio/t2s/audioldm/wooden_beaters.wav" type="audio/wav">
+                </audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Church vs Temple -->
+      <div class="comparison-row">
+        <h4 class="title is-5">종교 (Religion)</h4>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">"the sound of a church bell"</p></div>
+              <div class="card-content">
+                <audio class="t2s-audio" data-category="church" controls style="width: 100%;">
+                  <source src="./static/audio/t2s/audioldm/church.wav" type="audio/wav">
+                </audio>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">"the sound of a temple bell"</p></div>
+              <div class="card-content">
+                <audio class="t2s-audio" data-category="temple" controls style="width: 100%;">
+                  <source src="./static/audio/t2s/audioldm/temple.wav" type="audio/wav">
+                </audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typewriter vs Inkstone -->
+      <div class="comparison-row">
+        <h4 class="title is-5">쓰기 도구 (Writing Tools)</h4>
+        <div class="columns is-multiline">
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">"the sound of a typewriter"</p></div>
+              <div class="card-content">
+                <audio class="t2s-audio" data-category="typewriter" controls style="width: 100%;">
+                  <source src="./static/audio/t2s/audioldm/typewriter.wav" type="audio/wav">
+                </audio>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-header"><p class="card-header-title">"the sound of grinding an ink stick on an inkstone"</p></div>
+              <div class="card-content">
+                <audio class="t2s-audio" data-category="inkstone" controls style="width: 100%;">
+                  <source src="./static/audio/t2s/audioldm/inkstone.wav" type="audio/wav">
+                </audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Analysis Results -->
+<section class="section" id="analysis-section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Analysis Results</h2>
+    <p class="subtitle has-text-centered">정량적 평가 결과</p>
+
+    <div class="columns is-multiline">
+      <!-- S2I Quality (FID) -->
+      <div class="column is-half">
+        <div class="card">
+          <div class="card-header">
+            <p class="card-header-title">S2I Quality: FID Score (Lower is Better)</p>
+          </div>
+          <div class="card-image">
+            <figure class="image">
+              <img src="./static/images/graphs/fid_comparison.png" alt="FID Score Comparison">
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2I Alignment (CLIP) -->
+      <div class="column is-half">
+        <div class="card">
+          <div class="card-header">
+            <p class="card-header-title">S2I Alignment: CLIP Score (Higher is Better)</p>
+          </div>
+          <div class="card-image">
+            <figure class="image">
+              <img src="./static/images/graphs/clip_comparison.png" alt="CLIP Score Comparison">
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- T2S Quality (FAD) -->
+      <div class="column is-half">
+        <div class="card">
+          <div class="card-header">
+            <p class="card-header-title">T2S Quality: Fréchet Distance (Lower is Better)</p>
+          </div>
+          <div class="card-image">
+            <figure class="image">
+              <img src="./static/images/graphs/fd_dot_style.png" alt="Frechet Distance Comparison">
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- T2S Alignment (CLAP) -->
+      <div class="column is-half">
+        <div class="card">
+          <div class="card-header">
+            <p class="card-header-title">T2S Alignment: CLAP Score (Higher is Better)</p>
+          </div>
+          <div class="card-image">
+            <figure class="image">
+              <img src="./static/images/graphs/fig1_dot_style.png" alt="CLAP Score Comparison">
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Findings -->
+    <div class="box" style="margin-top: 2rem;">
+      <h3 class="title is-4">Key Findings</h3>
+      <div class="content">
+        <ul>
+          <li><strong>품질 (Quality):</strong> 모든 모델이 Traditional 범주에서 Contemporary 범주보다 높은 거릿값을 보여 음향/시각적 품질의 불안정성이 관찰됨</li>
+          <li><strong>정합성 (Alignment):</strong> 서구적이고 현대적인 프롬프트일수록 실제 이미지/음향과 더 높은 유사도를 보임</li>
+          <li><strong>문화적 편향:</strong> 한국 전통 소리에 대해 모델들이 문화적 특성을 충분히 반영하지 못하고 서구 중심적 표현으로 치환하는 경향 확인</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BibTeX -->
+<section class="section" id="bibtex">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{lee2026cultural,
+  title={멀티모달 생성형 인공지능에서 사운드 기반 생성의 문화적 편향 분석},
+  author={이혜진 and 진솔 and 김형일},
+  booktitle={제38회 영상처리 및 이해에 관한 워크샵},
+  year={2026}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+      <p>
+        Website template borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+function updateS2IImages() {
+  const model = document.getElementById('s2i-model-selector').value;
+  const images = document.querySelectorAll('.s2i-image');
+  images.forEach(img => {
+    const category = img.dataset.category;
+    img.src = `./static/images/s2i/${model}/${category}.png`;
+  });
+}
+
+function updateT2SAudios() {
+  const model = document.getElementById('t2s-model-selector').value;
+  const audios = document.querySelectorAll('.t2s-audio');
+  audios.forEach(audio => {
+    const category = audio.dataset.category;
+    audio.src = `./static/audio/t2s/${model}/${category}.wav`;
+    audio.load();
+  });
+}
+</script>
+
+</body>
+</html>
