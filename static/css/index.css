@@ -175,18 +175,11 @@ audio {
   }
 }
 
-/* Image Loading Placeholder */
-.card-image {
-  background: #f0f0f0;
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* S2I Image Styles */
 .card-image img {
-  max-width: 100%;
+  width: 100%;
   height: auto;
+  display: block;
 }
 
 /* Model Selector Highlight */
