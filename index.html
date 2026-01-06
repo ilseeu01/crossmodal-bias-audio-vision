@@ -11,6 +11,49 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <style>
+    .author-email {
+      position: relative;
+      cursor: pointer;
+    }
+    .email-popup {
+      position: absolute;
+      background: #363636;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      white-space: nowrap;
+      z-index: 1000;
+      transform: translateX(-50%);
+      left: 50%;
+      top: 100%;
+      margin-top: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: fadeIn 0.2s ease;
+    }
+    .email-popup::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid #363636;
+    }
+    .email-popup a {
+      color: #3273dc;
+      text-decoration: none;
+    }
+    .email-popup a:hover {
+      text-decoration: underline;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-5px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+  </style>
 </head>
 <body>
 
@@ -27,10 +70,10 @@
           </h2>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-              <a href="#">이혜진</a><sup>1</sup>,
+              <a href="#" class="author-email" data-email="ilseeu01@jnu.ac.kr" onclick="showEmailPopup(event, this)">이혜진</a><sup>1</sup>,
             </span>
             <span class="author-block">
-              <a href="#">진솔</a><sup>1</sup>,
+              <a href="#" class="author-email" data-email="234545@jnu.ac.kr" onclick="showEmailPopup(event, this)">진솔</a><sup>1</sup>,
             </span>
             <span class="author-block">
               <a href="#">김형일</a><sup>2</sup>
@@ -49,7 +92,7 @@
           <div class="column has-text-centered">
             <div class="publication-links">
               <span class="link-block">
-                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                <a href="./static/paper.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-file-pdf"></i></span>
                   <span>Paper</span>
                 </a>
@@ -473,6 +516,41 @@
 </footer>
 
 <script>
+// Email popup functionality
+let currentPopup = null;
+
+function showEmailPopup(event, element) {
+  event.preventDefault();
+
+  // Remove existing popup if any
+  if (currentPopup) {
+    currentPopup.remove();
+    currentPopup = null;
+  }
+
+  const email = element.dataset.email;
+  const popup = document.createElement('div');
+  popup.className = 'email-popup';
+  popup.innerHTML = `<a href="mailto:${email}">${email}</a>`;
+
+  element.style.position = 'relative';
+  element.appendChild(popup);
+  currentPopup = popup;
+
+  // Close popup when clicking outside
+  setTimeout(() => {
+    document.addEventListener('click', function closePopup(e) {
+      if (!element.contains(e.target)) {
+        if (currentPopup) {
+          currentPopup.remove();
+          currentPopup = null;
+        }
+        document.removeEventListener('click', closePopup);
+      }
+    });
+  }, 0);
+}
+
 function updateS2IImages() {
   const model = document.getElementById('s2i-model-selector').value;
   const images = document.querySelectorAll('.s2i-image');

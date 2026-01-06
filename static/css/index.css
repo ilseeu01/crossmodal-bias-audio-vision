@@ -57,7 +57,15 @@ body {
 }
 
 .section h2.title {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section h2.title + .subtitle {
+  margin-top: 100.5rem !important;
+}
+
+.section .subtitle {
+  margin-bottom: 2rem;
 }
 
 /* Card Styles */
